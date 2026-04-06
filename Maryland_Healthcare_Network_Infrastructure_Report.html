@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maryland Healthcare — Network Infrastructure Upgrade Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #0d4f8b;
+            --primary-light: #1a6bb5;
+            --accent: #2ecc71;
+            --accent-dark: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --bg: #ffffff;
+            --bg-alt: #f8f9fb;
+            --border: #e1e8ed;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            font-size: 11pt;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* ========== COVER PAGE ========== */
+        .cover-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(150deg, #0d4f8b 0%, #1a6bb5 40%, #2980b9 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, transparent 70%);
+        }
+
+        .cover-page::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60, #2ecc71);
+        }
+
+        .cover-logo {
+            font-size: 14pt;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 24px;
+        }
+
+        .cover-title {
+            font-size: 32pt;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            max-width: 700px;
+        }
+
+        .cover-subtitle {
+            font-size: 16pt;
+            font-weight: 300;
+            opacity: 0.85;
+            margin-bottom: 48px;
+        }
+
+        .cover-meta {
+            display: flex;
+            gap: 48px;
+            font-size: 10pt;
+            opacity: 0.75;
+        }
+
+        .cover-meta-item {
+            text-align: center;
+        }
+
+        .cover-meta-item strong {
+            display: block;
+            font-weight: 600;
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+
+        .cover-meta-item span {
+            font-size: 11pt;
+            font-weight: 400;
+        }
+
+        .cover-status {
+            margin-top: 48px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 204, 113, 0.2);
+            border: 1.5px solid rgba(46, 204, 113, 0.5);
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 11pt;
+            letter-spacing: 1px;
+        }
+
+        .cover-status::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #2ecc71;
+            color: white;
+            font-size: 12pt;
+            font-weight: 700;
+        }
+
+        /* ========== CONTENT PAGES ========== */
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 48px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 32px;
+            font-size: 8pt;
+            color: var(--text-light);
+        }
+
+        .page-header-logo {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 9pt;
+            letter-spacing: 1px;
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        h1 {
+            font-size: 22pt;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 15pt;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 36px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            page-break-after: avoid;
+        }
+
+        h2 .section-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 11pt;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-top: 22px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+
+        h4 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 12px;
+        }
+
+        /* ========== EXECUTIVE SUMMARY BOX ========== */
+        .executive-summary {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+        }
+
+        .executive-summary p {
+            font-size: 11pt;
+            line-height: 1.7;
+        }
+
+        /* ========== TABLES ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 9.5pt;
+            page-break-inside: auto;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        thead th {
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 9pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--bg-alt);
+        }
+
+        tbody td {
+            padding: 9px 12px;
+            vertical-align: top;
+        }
+
+        /* ========== STATUS BADGES ========== */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 8pt;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-complete {
+            background: #e8f8f0;
+            color: #1a8a4a;
+            border: 1px solid #b8e6cc;
+        }
+
+        .badge-pending {
+            background: #fff8e1;
+            color: #b8860b;
+            border: 1px solid #ffe0a0;
+        }
+
+        .badge-critical {
+            background: #fde8e8;
+            color: #c0392b;
+            border: 1px solid #f5b7b1;
+        }
+
+        .badge-stored {
+            background: #eef2f7;
+            color: #5a6c7d;
+            border: 1px solid #d5dce4;
+        }
+
+        /* ========== CALLOUT BOXES ========== */
+        .callout {
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+
+        .callout-danger {
+            background: #fef2f2;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .callout-danger .callout-title {
+            color: #c0392b;
+        }
+
+        .callout-warning {
+            background: #fffbeb;
+            border-left: 4px solid #f39c12;
+        }
+
+        .callout-warning .callout-title {
+            color: #d68910;
+        }
+
+        .callout-success {
+            background: #f0fdf4;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .callout-success .callout-title {
+            color: #1a8a4a;
+        }
+
+        .callout-info {
+            background: #f0f7ff;
+            border-left: 4px solid var(--primary);
+        }
+
+        .callout-info .callout-title {
+            color: var(--primary);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            font-size: 10pt;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== METRIC CARDS ========== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 20px 0 28px;
+        }
+
+        .metric-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+
+        .metric-card .metric-label {
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .metric-card .metric-before {
+            font-size: 12pt;
+            font-weight: 300;
+            color: #e74c3c;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .metric-card .metric-after {
+            font-size: 18pt;
+            font-weight: 800;
+            color: var(--accent-dark);
+        }
+
+        .metric-card .metric-note {
+            font-size: 8pt;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* ========== SPEED COMPARISON ========== */
+        .speed-bar-container {
+            margin: 16px 0 24px;
+        }
+
+        .speed-bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .speed-bar-label {
+            width: 120px;
+            font-size: 9pt;
+            font-weight: 600;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .speed-bar-track {
+            flex: 1;
+            height: 28px;
+            background: #f0f0f0;
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .speed-bar-fill {
+            height: 100%;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 9pt;
+            font-weight: 700;
+            color: white;
+            min-width: 80px;
+            white-space: nowrap;
+        }
+
+        .speed-bar-fill.before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .speed-bar-fill.after {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline {
+            margin: 20px 0;
+            padding-left: 24px;
+            border-left: 3px solid var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 0 0 24px 24px;
+            page-break-inside: avoid;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-item.complete::before {
+            background: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 11pt;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-detail {
+            font-size: 10pt;
+            color: var(--text-light);
+        }
+
+        /* ========== LISTS ========== */
+        ul, ol {
+            margin: 8px 0 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* ========== UTILITY ========== */
+        .text-muted { color: var(--text-light); }
+        .text-bold { font-weight: 700; }
+        .text-small { font-size: 9pt; }
+        .mt-0 { margin-top: 0; }
+        .mb-0 { margin-bottom: 0; }
+        code {
+            background: #eef2f7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9.5pt;
+            color: var(--primary);
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        /* ========== PRINT STYLES ========== */
+        @media print {
+            body {
+                font-size: 10pt;
+            }
+
+            .cover-page {
+                height: 100vh;
+            }
+
+            .content {
+                padding: 20px 32px;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @page {
+            margin: 1.5cm 1.8cm;
+            size: A4;
+        }
+
+        /* ========== FOOTER ========== */
+        .page-footer {
+            margin-top: 48px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 8pt;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== COVER PAGE ==================== -->
+    <div class="cover-page">
+        <div class="cover-logo">MARYLAND HEALTHCARE</div>
+        <h1 class="cover-title">Network Infrastructure<br>Upgrade Report</h1>
+        <p class="cover-subtitle">Complete Redesign, Reconfiguration & Physical Remediation</p>
+
+        <div class="cover-meta">
+            <div class="cover-meta-item">
+                <strong>Prepared By</strong>
+                <span>IT Administrator</span>
+            </div>
+            <div class="cover-meta-item">
+                <strong>Date of Work</strong>
+                <span>April 4 – 6, 2026</span>
+            </div>
+            <div class="cover-meta-item">
+                <strong>Document Date</strong>
+                <span>April 6, 2026</span>
+            </div>
+        </div>
+
+        <div class="cover-status">CORE INFRASTRUCTURE — COMPLETE</div>
+    </div>
+
+    <!-- ==================== CONTENT ==================== -->
+    <div class="content">
+
+        <div class="page-header">
+            <span class="page-header-logo">MARYLAND HEALTHCARE</span>
+            <span>Network Infrastructure Upgrade Report — April 2026</span>
+        </div>
+
+        <!-- SECTION 1: EXECUTIVE SUMMARY -->
+        <h2><span class="section-number">1</span> Executive Summary</h2>
+
+        <div class="executive-summary">
+            <p>The hospital's internet and Wi-Fi infrastructure was suffering from chronic instability caused by a <strong>Triple DHCP conflict</strong>, fragmented network architecture, and degraded physical cabling. The entire network has been systematically redesigned, reconfigured, and physically rewired to deliver a <strong>centralized, stable, and high-performance infrastructure.</strong></p>
+            <p>The primary beneficiaries of this upgrade are the clinical staff. Doctors and nurses utilize two dedicated tablets for ward rounds, and previously struggled with network issues as they moved between areas. With the new centralized infrastructure and seamless roaming, these tablets maintain a continuous, fast connection anywhere in the facility.</p>
+            <p class="mb-0">The project was completed over the course of three working days, including approximately <strong>6+ hours of physical ceiling/roof work</strong> involving cable routing, retrieval of abandoned cabling, extension of critical network drops to new office locations, and replacement of faulty hardware connectors.</p>
+        </div>
+
+        <!-- KEY OUTCOME METRICS -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">DHCP Servers</div>
+                <div class="metric-before">3 conflicting</div>
+                <div class="metric-after">1</div>
+                <div class="metric-note">Centralized</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Wi-Fi Networks</div>
+                <div class="metric-before">3+ fragmented</div>
+                <div class="metric-after">1</div>
+                <div class="metric-note">Seamless roaming for clinical tablets</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Cable Speed</div>
+                <div class="metric-before">10 Mbps</div>
+                <div class="metric-after">153 Mbps</div>
+                <div class="metric-note">15× improvement (on slowest branch)</div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: PRE-EXISTING PROBLEMS -->
+        <h2><span class="section-number">2</span> Pre-Existing Problems Identified</h2>
+
+        <h3>2.1 Triple DHCP Conflict <span class="badge badge-critical">CRITICAL</span></h3>
+        <p>Three separate routers were simultaneously acting as independent DHCP servers, each racing to assign IP addresses to connecting devices. This impacted staff systems heavily, causing frequent Wi-Fi disconnections, IP address conflicts resulting in devices going offline, and the need for constant manual router reboots. Clinical staff rounding the wards experienced major disruptions when using hospital tablets.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Model</th>
+                    <th>Problem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TP-Link Archer C80</td>
+                    <td>AC1900 MU-MIMO</td>
+                    <td>Running as DHCP Server #1</td>
+                </tr>
+                <tr>
+                    <td>TP-Link TL-WR940N</td>
+                    <td>Wireless N 450Mbps</td>
+                    <td>Running as DHCP Server #2</td>
+                </tr>
+                <tr>
+                    <td>TP-Link TL-MR3420</td>
+                    <td>3G/4G Wireless N</td>
+                    <td>Running as DHCP Server #3</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2 Double/Triple NAT</h3>
+        <p>Multiple routers performing Network Address Translation created layered NAT chains, causing slower speeds, failed remote access attempts to the NVR camera system, and degraded application performance.</p>
+
+        <h3>2.3 Fragmented Wi-Fi Networks</h3>
+        <p>Each router was broadcasting a different, unrelated SSID (e.g., <code>MARYLAND WIFI</code>, <code>Maryland Healthcare</code>, <code>MHC Exten</code>, <code>MD Office</code>, <code>Maryland Guest</code>). Clinical staff had to manually switch Wi-Fi networks as they moved between different areas of the hospital, which interrupted clinical workflow during ward rounds.</p>
+
+        <h3>2.4 Degraded Physical Cabling</h3>
+        <p>Ethernet cables throughout the ceiling infrastructure were found to have faulty crimps, a defective coupler in the ceiling severely degrading signal quality, and multiple abandoned idle cables creating clutter and confusion.</p>
+
+        <h3>2.5 Aging Equipment</h3>
+        <p>The Cisco Catalyst 2960 switch (manufactured June 2007) is 19 years old and running end-of-life firmware. It functions as a basic Layer 2 switch but receives no security patches.</p>
+
+        <!-- SECTION 3: WORK PERFORMED -->
+        <div class="page-break"></div>
+
+        <div class="page-header">
+            <span class="page-header-logo">MARYLAND HEALTHCARE</span>
+            <span>Network Infrastructure Upgrade Report — April 2026</span>
+        </div>
+
+        <h2><span class="section-number">3</span> Work Performed</h2>
+
+        <h3>3.1 Project Execution Timeline</h3>
+        <div class="timeline">
+            <div class="timeline-item complete">
+                <div class="timeline-title">Day 1 (Saturday, April 4) &mdash; Ceiling & Physical Routing</div>
+                <div class="timeline-detail">Conducted extensive physical infrastructure work, including routing new drops through the ceiling and retrieving abandoned idle cables.</div>
+            </div>
+            <div class="timeline-item complete">
+                <div class="timeline-title">Day 2 (Sunday, April 5) &mdash; Structural Connectivity & Crimping</div>
+                <div class="timeline-detail">Overcame difficulties with the crimping tool, terminating all connections, and structurally wiring the Cisco switch and the entire network backbone.</div>
+            </div>
+            <div class="timeline-item complete">
+                <div class="timeline-title">Day 3 (Monday, April 6) &mdash; Logical Unification & Bottleneck Resolution</div>
+                <div class="timeline-detail">Executed the logical reconfiguration by setting downstream routers to transparent Access Points, broadcasting a unified Wi-Fi system, and finally resolving the 10 Mbps speed bottleneck on the TL-MR3420.</div>
+            </div>
+        </div>
+
+        <h3>3.2 Network Architecture Redesign</h3>
+        <p>The entire network topology was redesigned around a <strong>single-gateway, centralized DHCP</strong> architecture. All downstream routers were converted to transparent Access Points, and a unified Wi-Fi network was deployed across the entire facility.</p>
+
+        <div class="callout callout-info">
+            <div class="callout-title">Design Principle</div>
+            <strong>Before:</strong> Three competing routers, three DHCP servers, three separate Wi-Fi networks.<br>
+            <strong>After:</strong> One gateway managing all IP assignments, four Access Points broadcasting a single unified network.
+        </div>
+
+        <h4>New Network Topology — IP Address Assignments</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>IP Address</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TP-Link Archer C80</td>
+                    <td><code>192.168.0.1</code></td>
+                    <td><strong>Primary Gateway & Sole DHCP Server</strong></td>
+                    <td><span class="badge badge-complete">Complete</span></td>
+                </tr>
+                <tr>
+                    <td>TP-Link TL-WR940N</td>
+                    <td><code>192.168.0.2</code></td>
+                    <td>Access Point (DHCP Disabled)</td>
+                    <td><span class="badge badge-complete">Complete</span></td>
+                </tr>
+                <tr>
+                    <td>TP-Link TL-MR3420</td>
+                    <td><code>192.168.0.3</code></td>
+                    <td>Access Point (DHCP Disabled)</td>
+                    <td><span class="badge badge-complete">Complete</span></td>
+                </tr>
+                <tr>
+                    <td>Ubiquiti UniFi UAP-LR</td>
+                    <td><code>192.168.0.4</code></td>
+                    <td>Access Point (DHCP Disabled)</td>
+                    <td><span class="badge badge-complete">Complete</span></td>
+                </tr>
+                <tr>
+                    <td>Cisco Catalyst 2960</td>
+                    <td>—</td>
+                    <td>Layer 2 Distribution Switch</td>
+                    <td><span class="badge badge-complete">Operational</span></td>
+                </tr>
+                <tr>
+                    <td>Hikvision NVR</td>
+                    <td>DHCP</td>
+                    <td>Camera Recorder</td>
+                    <td><span class="badge badge-pending">Static IP Pending</span></td>
+                </tr>
+                <tr>
+                    <td>Hikvision PoE Switch</td>
+                    <td>—</td>
+                    <td>Camera Power & Data</td>
+                    <td><span class="badge badge-complete">Operational</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Unified Wi-Fi Network</h4>
+        <p>All four Access Points now broadcast an identical, synchronized configuration enabling <strong>seamless roaming</strong> — doctors and nurses utilizing the two clinical tablets can securely conduct ward rounds and move through the entire hospital automatically transitioning between Access Points without dropping their internet connection.</p>
+        <table>
+            <thead>
+                <tr><th>Setting</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Network Name (SSID)</td><td><code>MARYLAND WIFI</code></td></tr>
+                <tr><td>Security Protocol</td><td>WPA2-PSK / AES</td></tr>
+                <tr><td>Password</td><td>Secured (documented separately for authorized personnel)</td></tr>
+                <tr><td>Coverage Points</td><td>4 Access Points across the facility</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.3 Gateway Router Configuration (Archer C80)</h3>
+        <ul>
+            <li>Confirmed and secured as the sole DHCP server for the entire network</li>
+            <li>DHCP range configured to serve all connected devices</li>
+            <li>Static IP range (<code>.1</code> through <code>.9</code>) reserved for infrastructure devices</li>
+            <li>Admin password secured</li>
+            <li><strong>Firmware upgraded</strong> from version <code>1.11.30</code> (June 2022) to version <code>1.13.15</code> (August 2024), applying two years of critical updates including:
+                <ul>
+                    <li>DNS-over-HTTPS (DoH) for encrypted DNS queries</li>
+                    <li>HTTPS access for the admin interface</li>
+                    <li>IoT network isolation capabilities</li>
+                    <li>Security patches and stability improvements</li>
+                    <li>IPTV and multicast video routing bug fixes</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>3.4 Access Point Conversions</h3>
+
+        <h4>TP-Link TL-WR940N → Access Point (192.168.0.2)</h4>
+        <ul>
+            <li>DHCP server disabled</li>
+            <li>LAN IP changed from default to <code>192.168.0.2</code></li>
+            <li>Wi-Fi SSID changed to <code>MARYLAND WIFI</code> with matching WPA2 security</li>
+            <li>Internet cable moved from WAN port to LAN port for transparent bridging</li>
+            <li>DNS configured to point to gateway (<code>192.168.0.1</code>)</li>
+        </ul>
+
+        <h4>TP-Link TL-MR3420 → Access Point (192.168.0.3)</h4>
+        <ul>
+            <li>DHCP server disabled</li>
+            <li>LAN IP changed to <code>192.168.0.3</code></li>
+            <li>Wi-Fi SSID configured to <code>MARYLAND WIFI</code> with matching security</li>
+            <li>Internet cable connected via LAN port (not WAN)</li>
+        </ul>
+
+        <h4>Ubiquiti UniFi UAP-LR → Access Point (192.168.0.4)</h4>
+        <ul>
+            <li>UniFi Controller software installed and configured on administrator workstation</li>
+            <li>Resolved <strong>port 8080 conflict</strong> caused by a zombie Java process blocking controller communication — terminated via system process manager</li>
+            <li>Resolved <strong>adoption loop</strong> by performing hard factory reset on the UAP-LR and clearing UniFi software cache</li>
+            <li>Assigned static IP <code>192.168.0.4</code></li>
+            <li>Configured to broadcast <code>MARYLAND WIFI</code> with matching WPA2 security</li>
+            <li>Disabled "Rogue DHCP Server Detection" to prevent false alerts</li>
+        </ul>
+
+        <!-- SECTION 3.4: PHYSICAL WORK -->
+        <div class="page-break"></div>
+
+        <div class="page-header">
+            <span class="page-header-logo">MARYLAND HEALTHCARE</span>
+            <span>Network Infrastructure Upgrade Report — April 2026</span>
+        </div>
+
+        <h3>3.5 Physical Infrastructure Work (Ceiling/Roof — 6+ Hours)</h3>
+
+        <p>This was the most physically demanding portion of the project, involving extended work in the hospital's ceiling cavity and roof space.</p>
+
+        <div class="timeline">
+            <div class="timeline-item complete">
+                <div class="timeline-title">Cable Routing & Extension</div>
+                <div class="timeline-detail">Extended the TL-WR940N network drop and the NVR (camera recorder) connection to the <strong>new Managing Director's office</strong> location, routing new Ethernet cable through the ceiling infrastructure. All cables terminated using the <strong>T568B wiring standard</strong> on both ends.</div>
+            </div>
+            <div class="timeline-item complete">
+                <div class="timeline-title">Cable Retrieval & Cleanup</div>
+                <div class="timeline-detail">Discovered and retrieved <strong>multiple idle/abandoned Ethernet cables</strong> throughout the ceiling that were no longer connected to any equipment. Removed unused cable runs to reduce clutter, prevent confusion during future maintenance, and recover reusable cable stock.</div>
+            </div>
+            <div class="timeline-item complete">
+                <div class="timeline-title">Troubleshooting the Historically Slowest Router (10 Mbps to 153 Mbps)</div>
+                <div class="timeline-detail">Investigated the network branch serving the TL-MR3420, which had historically been the slowest router at the facility. Even after converting the MR3420 to an Access Point, performance remained unusually poor. Conducted a direct wired test by connecting the AP's supply cable directly into a diagnostic laptop, revealing a severe <strong>10 Mbps speed bottleneck</strong>. Traced the cable run into the ceiling and identified a <strong>defective Ubiquiti PoE coupler/brick</strong> that was severely degrading the signal (2 wires dead, 1 wire weak). Replaced the defective coupler with a clean, new RJ45 standard coupler and restored the connection. <strong>Result:</strong> Network speed on this specific cable run experienced a <strong>15× speed increase</strong> &mdash; jumping from 10 Mbps to 153 Mbps directly, and restoring the MR3420 Access Point to its maximum 91+ Mbps wireless throughput.</div>
+            </div>
+            <div class="timeline-item complete">
+                <div class="timeline-title">Crimping & Connector Termination</div>
+                <div class="timeline-detail">Terminated all new and re-made cable runs with fresh RJ45 connectors. Overcame crimping tool difficulties through persistence and careful technique to achieve proper wire-to-pin contact on all connectors.</div>
+            </div>
+        </div>
+
+        <!-- SPEED RESULTS -->
+        <h3>3.6 Speed Verification Results</h3>
+
+        <p>The faulty coupler in the ceiling was forcing the network switch to auto-negotiate the connection to the facility's historically slowest router down to <strong>10 Mbps</strong> as a fail-safe. After targeted troubleshooting and replacing the coupler, speeds were restored to the hardware maximum:</p>
+
+        <div class="speed-bar-container">
+            <h4 class="mt-0">Direct Cable Test (Laptop via Ceiling Cable)</h4>
+            <div class="speed-bar-row">
+                <div class="speed-bar-label">Before</div>
+                <div class="speed-bar-track">
+                    <div class="speed-bar-fill before" style="width: 6.5%;">10 Mbps</div>
+                </div>
+            </div>
+            <div class="speed-bar-row">
+                <div class="speed-bar-label">After</div>
+                <div class="speed-bar-track">
+                    <div class="speed-bar-fill after" style="width: 100%;">152.94 Mbps</div>
+                </div>
+            </div>
+
+            <h4>Via TL-MR3420 Wi-Fi</h4>
+            <div class="speed-bar-row">
+                <div class="speed-bar-label">Before</div>
+                <div class="speed-bar-track">
+                    <div class="speed-bar-fill before" style="width: 6.5%;">10 Mbps</div>
+                </div>
+            </div>
+            <div class="speed-bar-row">
+                <div class="speed-bar-label">After</div>
+                <div class="speed-bar-track">
+                    <div class="speed-bar-fill after" style="width: 60%;">91.40 Mbps</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-success">
+            <div class="callout-title">Result</div>
+            The 91.40 Mbps Wi-Fi result represents <strong>91% of the router's 100 Mbps port capacity</strong>, confirming the hardware is performing at its absolute maximum. Restoring this connection delivered a <strong>15× speed improvement</strong> on what was previously the facility's slowest network point.
+        </div>
+
+        <!-- SECTION 4: EQUIPMENT INVENTORY -->
+        <div class="page-break"></div>
+
+        <div class="page-header">
+            <span class="page-header-logo">MARYLAND HEALTHCARE</span>
+            <span>Network Infrastructure Upgrade Report — April 2026</span>
+        </div>
+
+        <h2><span class="section-number">4</span> Equipment Inventory</h2>
+
+        <h3>Active Infrastructure</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Device</th>
+                    <th>Model</th>
+                    <th>Role</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Starlink Dish</td><td>—</td><td>Internet Source (Roof)</td><td>—</td></tr>
+                <tr><td>2</td><td>Starlink Router</td><td>UTR-211</td><td>ISP Gateway / Dish Power</td><td>—</td></tr>
+                <tr><td>3</td><td>Starlink Ethernet Adapter</td><td>—</td><td>Proprietary → RJ45 Converter</td><td>—</td></tr>
+                <tr><td>4</td><td>TP-Link Archer C80</td><td>AC1900</td><td>Primary Gateway & DHCP Server</td><td><code>.1</code></td></tr>
+                <tr><td>5</td><td>Cisco Catalyst 2960</td><td>WS-C2960-8TC-L</td><td>Layer 2 Distribution Switch</td><td>—</td></tr>
+                <tr><td>6</td><td>TP-Link TL-WR940N</td><td>450Mbps N</td><td>Wi-Fi Access Point</td><td><code>.2</code></td></tr>
+                <tr><td>7</td><td>TP-Link TL-MR3420</td><td>3G/4G N v5</td><td>Wi-Fi Access Point</td><td><code>.3</code></td></tr>
+                <tr><td>8</td><td>Ubiquiti UniFi UAP-LR</td><td>802.11n LR</td><td>Wi-Fi Access Point</td><td><code>.4</code></td></tr>
+                <tr><td>9</td><td>Hikvision NVR</td><td>16-Ch PoE</td><td>Camera Recorder</td><td>DHCP</td></tr>
+                <tr><td>10</td><td>Hikvision PoE Switch</td><td>DS-3E0318P-E/M</td><td>Camera Power & Data</td><td>—</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Reserve / Spare Equipment</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Recommended Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>D-Link DIR-612</td>
+                    <td>Wireless N300</td>
+                    <td><span class="badge badge-stored">Stored</span></td>
+                    <td>Emergency backup router</td>
+                </tr>
+                <tr>
+                    <td>TP-Link TL-SF1005D</td>
+                    <td>5-Port 10/100</td>
+                    <td><span class="badge badge-stored">Stored</span></td>
+                    <td>Wired port expansion</td>
+                </tr>
+                <tr>
+                    <td>Ubiquiti PoE Injector</td>
+                    <td>24V</td>
+                    <td><span class="badge badge-stored">Available</span></td>
+                    <td>Spare power for UniFi AP</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 5: RECOMMENDATIONS -->
+        <h2><span class="section-number">5</span> Recommendations</h2>
+
+        <h3>5.1 Immediate Actions (Within 1 Week)</h3>
+        <div class="callout callout-warning">
+            <div class="callout-title">Priority</div>
+            <ul class="mb-0">
+                <li><strong>Assign a static IP to the Hikvision NVR</strong> (e.g., <code>192.168.0.20</code>) to prevent the remote camera viewing app from losing connectivity after power fluctuations or router reboots.</li>
+                <li><strong>Verify remote camera access</strong> by testing the Hik-Connect app over cellular data (4G/5G) to confirm the NVR is correctly routing through the new gateway.</li>
+            </ul>
+        </div>
+
+        <h3>5.2 Short-Term (Within 1 Month)</h3>
+        <ul>
+
+            <li><strong>Document all static IP assignments</strong> in an internal IT reference sheet stored in a secure, accessible location.</li>
+            <li><strong>Re-crimp any remaining suspect cables</strong> using cable tester verification on all 8 wires before deployment.</li>
+        </ul>
+
+        <h3>5.3 Long-Term (3–6 Months)</h3>
+        <ul>
+            <li><strong>Plan replacement of the Cisco Catalyst 2960</strong> — the switch is 19 years old with end-of-life firmware. A modern managed switch would provide VLAN support, monitoring, and security.</li>
+            <li><strong>Consider upgrading the TL-WR940N and TL-MR3420</strong> to Wi-Fi 5 or Wi-Fi 6 Access Points. Both are limited to 2.4GHz / 100Mbps ports, restricting throughput in their coverage areas.</li>
+            <li><strong>Implement network segmentation (VLANs)</strong> to isolate camera traffic, staff devices, and guest devices for security and performance.</li>
+        </ul>
+
+        <!-- SECTION 6: OUTCOMES SUMMARY -->
+        <h2><span class="section-number">6</span> Summary of Outcomes</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Before</th>
+                    <th>After</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DHCP Servers on Network</td>
+                    <td style="color:#c0392b; font-weight:600;">3 (conflicting)</td>
+                    <td style="color:#27ae60; font-weight:600;">1 (centralized)</td>
+                </tr>
+                <tr>
+                    <td>Wi-Fi Networks (SSIDs)</td>
+                    <td style="color:#c0392b; font-weight:600;">3+ (fragmented)</td>
+                    <td style="color:#27ae60; font-weight:600;">1 unified (MARYLAND WIFI)</td>
+                </tr>
+                <tr>
+                    <td>Clinical Tablet Experience</td>
+                    <td style="color:#c0392b; font-weight:600;">Connections dropped during ward rounds</td>
+                    <td style="color:#27ae60; font-weight:600;">Seamless roaming across the facility</td>
+                </tr>
+                <tr>
+                    <td>Cable Speed (Affected Run)</td>
+                    <td style="color:#c0392b; font-weight:600;">10 Mbps</td>
+                    <td style="color:#27ae60; font-weight:600;">91–153 Mbps</td>
+                </tr>
+                <tr>
+                    <td>Staff / Device Connectivity</td>
+                    <td style="color:#c0392b; font-weight:600;">Intermittent failures</td>
+                    <td style="color:#27ae60; font-weight:600;">Stable</td>
+                </tr>
+                <tr>
+                    <td>Gateway Firmware</td>
+                    <td style="color:#c0392b; font-weight:600;">2022 (outdated)</td>
+                    <td style="color:#27ae60; font-weight:600;">2024 (current, patched)</td>
+                </tr>
+                <tr>
+                    <td>Ceiling Cable Infrastructure</td>
+                    <td style="color:#c0392b; font-weight:600;">Faulty couplers, abandoned cables</td>
+                    <td style="color:#27ae60; font-weight:600;">Cleaned, repaired, verified</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout callout-success">
+            <div class="callout-title">Conclusion</div>
+            The hospital's core network infrastructure is now operating on a stable, centralized, and professionally organized foundation. Clinical staff, especially doctors and nurses utilizing tablets for ward rounds, now experience seamless roaming across the entire facility. Furthermore, eliminating the 10 Mbps physical bottleneck has unlocked 15x faster speeds on previously degraded network segments, ensuring all applications run smoothly, while the surveillance camera system remains fully operational on the modernized network.
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <p>Maryland Healthcare — Network Infrastructure Upgrade Report — April 2026</p>
+            <p>Prepared by the IT Department — Confidential</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
